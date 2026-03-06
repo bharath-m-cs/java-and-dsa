@@ -20,12 +20,26 @@ public class Timeandspace {
                 System.out.println(i + " " + j);
             }
         }
-
+    // 1.
+        for(int i = 0; i < n; i++) {
+    for(int j = 0; j < n; j++) {
+        System.out.println(i + " " + j);
+    }
+}
+  // 1.      
+for(int i = n; i > 0; i--) {
+    for(int j = 0; j < i; j++) {
+        System.out.println(i + j);
+    }
+}
 
         // 2. O(n)
         for (int i = 1; i < n; i = i + 2) {
             System.out.println(i);
         }
+        for(int i = 0; i < n; i++) {
+    System.out.println(i);
+}
 
 
         // 3. O(log n)
