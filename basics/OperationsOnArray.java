@@ -1,16 +1,18 @@
-package CodingExercise;
+package DSA;
 
 public class OperationsOnArray {
 
     static void traverseArray( int []arr , int size)
     {
-
+        System.out.println("the elements of array are ");
         for ( int i =0 ; i<size;i++)
         {
             System.out.print(arr[i]+ " ");
-            System.out.println();
+
+
 
         }
+        System.out.println();
 
     }
 
@@ -21,10 +23,23 @@ public class OperationsOnArray {
             arr[i]=arr[i-1];
         }
     arr[0]=x;
-        System.out.println(" the array elements after insertion are ");
+
+
 
     }
 
+    static void insertatEnd ( int [] arr, int size , int x)
+    {
+        arr[size] = x;
+    }
+    static void insertAtPosition(int [] arr , int size, int pos, int x)
+    {
+        for (int i = size ; i >= pos; i--)
+        {
+            arr[i]=arr[i-1];
+        }
+        arr[pos-1] = x;
+    }
     public static void main(String[] args) {
         int [] arr = new int[100];
         int size =5;
@@ -35,10 +50,18 @@ public class OperationsOnArray {
         arr[4]=23;
 
 
-
+//
 traverseArray(arr,size);
 insertAtBeginning(arr,size,20);
 size++;
+        System.out.println(" After insertion ");
 traverseArray(arr,size);
+insertatEnd(arr,size,9);
+size++;
+traverseArray(arr,size);
+insertAtPosition(arr,size,3,1);
+size++;
+traverseArray(arr,size);
+
     }
 }
