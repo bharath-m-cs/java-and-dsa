@@ -1,0 +1,29 @@
+package CodingExercise;
+
+import java.util.Arrays;
+
+public class RotateArray {
+
+ static int  [] RotateArray(int [] arr , int x)
+{
+    int n = arr.length;
+    int [] temp  = new int[n];
+    for (int i =0 ; i< arr.length;i++)
+    {
+        temp[(i+x)%n]= arr[i];
+
+    }
+    return temp;
+
+
+
+}
+
+
+    public static void main(String[] args) {
+
+        int [] arr = { 1,2,3,4,5,6,7,};
+        int []res = RotateArray(arr,3);
+        System.out.println(Arrays.toString(res));
+    }
+}
