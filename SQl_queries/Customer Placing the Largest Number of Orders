@@ -1,0 +1,18 @@
+
+select O.customer_number
+from orders O
+group by O.customer_number
+having count(*) =
+(
+
+
+select MAX(order_count)
+from
+(
+
+
+select o.customer_number ,count(*) as order_count
+from orders o
+group by o.customer_number
+)X
+);
