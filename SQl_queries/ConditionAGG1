@@ -1,0 +1,35 @@
+E1. Orders(order_id, customer_id, status) — count completed vs cancelled orders per customer, as two columns.
+
+
+
+select customer_id
+
+SUM( case when status ="completed" then 1 else 0 end) as completed
+SUM( case when status ="cancelled" then 1 else 0 end) as cancelled
+
+from orders
+group by customer_id
+
+
+
+// or using joining of two queries can also be done
+
+
+select customer_id,c.completed,x.cancelled
+from
+(
+select customer_id
+from orders
+where status ="completed"
+group by customer_id
+)c
+
+join
+(
+select customer_id
+from orders
+where status ="cancelled"
+group by customer_id
+
+)x
+on c.customer_id =x.customer_id;

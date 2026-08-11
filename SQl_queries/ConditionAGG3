@@ -1,0 +1,32 @@
+E3. Students(id, class, marks) — per class, count students scoring above 50 vs at/below 50.
+
+select class, c.above50, x.below50
+
+from
+(
+select class,count(*) as above50
+from students
+where marks>50
+group by class
+)c
+
+join
+
+(
+select class ,count(*) asbelow50
+from students
+where marks<50
+group by class
+)
+x
+
+on c.class=x.class
+
+
+select class,
+
+SUM( case when marks>50 then 1 else 0 end) as Above50,
+SUM(case when marks<50 then 1 else 0 end) as below50
+
+from students
+group by class;

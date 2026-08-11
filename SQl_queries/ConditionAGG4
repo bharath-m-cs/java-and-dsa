@@ -1,0 +1,11 @@
+Students(id, class, marks)
+E4. Per class, count students in three bands: <35, 35–70, >70.
+
+select class ,
+
+SUM (case when marks<35 then 1 else 0 end) as below35,
+SUM(case when marks>=35 and marks<=70 then 1 else 0 end) as range35_70,
+SUM(case when marks>70 then 1 else 0 end) as above70
+
+from students
+group by class;

@@ -1,0 +1,12 @@
+Orders(order_id, customer_id, status)
+E2. Percentage of each customer's orders that were cancelled.
+
+
+select customer_id
+
+
+SUM( case when status ="cancelled" then 1 else 0) /count(*) *100 as cancelPerecent
+from orders
+group by customer_id
+
+
