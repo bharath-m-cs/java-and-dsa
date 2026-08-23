@@ -1,0 +1,203 @@
+Solve these 15 unlabeled problems (mix of Patterns 2, 3, 4).
+Table refs: 1)`Employee(id, name, salary, department)`,
+2)`Orders(order_id, customer_id, amount, status)`,
+3)`Students(id, name, class, marks)`.
+
+1. Departments with more than 2 employees.
+2. Department(s) with the highest total salary payout.
+3. For each department, count of employees earning above 50000 vs at/below.
+4. Customer(s) who placed the fewest orders.
+5. Classes with average marks above 70.
+6. For each customer, percentage of orders that are 'completed'.
+7. Department with the lowest average salary.
+8. Count of orders per status, for each customer, as separate columns.
+9. Classes with more than 5 students scoring above 90.
+10. Customer(s) with the highest number of cancelled orders specifically.
+11. For each department, employee count and average salary in the same row.
+12. Class(es) with the highest number of failing students (<35 marks).
+13. Departments where at least 3 employees earn above the department's own average (⚠ this one may not be solvable with only Patterns 2-4 — if you get stuck, note _why_; this previews Pattern 7).
+14. For each department, total salary of employees vs total count, in one row.
+15. Customer with the single largest individual order amount (not total — careful, this is `MAX(amount)` not `SUM`).
+
+
+
+answers
+
+1.
+select department
+from employee
+group by department
+having count(*) >2;
+
+
+2.
+select department , SUM(salary)
+from employee
+group by department
+having SUM(salar)=
+(
+
+select MAX(maxi)
+from
+(
+select department,  SUM(salary) as maxi
+from employee
+group by department
+
+
+)x
+);
+
+
+3.
+select department,
+
+SUM(case when salary>50000 then 1 else 0 end) as above_50k,
+SUM(case when salary<=50000 then 1 else 0 end) as below_50k,
+from employee
+group by department;
+
+
+4.
+select customer_id,count(*) as min_orders
+from orders
+group by customer_id
+having count(*)=
+(
+
+select MIN(mini)
+from
+(
+select customer_id, count(*) as mini
+from orders
+group customer_id
+)
+x
+);
+
+
+5.
+select class
+from students
+group by class
+havinng AVG(marks) >70;
+
+
+6.
+select customer_id,
+SUM(case when status="completed" then 1 else 0 end) / count(*) *100 as order_perctange
+from orders
+group by customer_id;
+
+
+7.
+select department , AVG(salary) as AVG_sal
+from employee
+group by department
+having AVG(salary)
+=(
+select MIN(AVG_sal)
+from
+(
+select department , AVG(salary) as AVG_sal
+from employee
+group by department
+)X
+
+);
+
+
+8.
+
+select customer_id ,
+SUM(case when status="approved" then 1 else 0 end) as count_approved,
+SUM(case when status ="dispproved" then 1 else 0 end ) as count_disapproved
+from orders
+group by customer_id
+;
+
+
+9.
+select class
+from student
+where marks >90
+group by class
+having count( distinct id ) >5;
+
+
+
+10.
+select customer_id , count(*) as cancel_count
+from orders
+where status="cancelled"
+group by customer_id
+having count(*) =
+(
+
+select MAX(cancel_count)
+from
+(
+select customer_id , count(*) as cancel_count
+from orders
+where status="cancelled"
+group by customer_id
+)
+X
+);
+
+
+11.
+
+select department,
+count(distinct id) as employee_count,
+AVG(salary) as avg_salary
+from employee
+group by department
+
+12.
+select class,count(*) as fail_count
+from students
+where marks<35
+group by class
+having count(*)=
+(
+select MAX(fail_count)
+from
+(
+select class,count(*) as fail_count
+from students
+where marks<35
+group by class
+)
+
+X
+);
+
+
+13. // pattern ahead (future saved )
+
+14.
+select department,
+SUM(salary) as total_sal,
+count(*) as total_count
+from employee
+group by department;
+
+
+15.
+SELECT customer_id, MAX(amount) AS total_amount
+FROM Orders
+GROUP BY customer_id
+HAVING MAX(amount) = (
+    SELECT MAX(total_amount)
+    FROM (
+        SELECT customer_id, MAX(amount) AS total_amount
+        FROM Orders
+        GROUP BY customer_id
+    ) x
+);
+
+
+
+
+
