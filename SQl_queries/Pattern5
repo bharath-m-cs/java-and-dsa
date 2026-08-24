@@ -1,0 +1,55 @@
+**Basic Practice Problems**
+Tables: `Employee(id, name, department_id)`, `Department(id, name)`
+
+- J1. List each employee's name with their department name (INNER JOIN).
+- J2. List every department along with employee names — include departments with zero employees (LEFT JOIN).
+- J3. Find departments that currently have no employees (anti-join).
+- J4. `Orders(order_id, customer_id)`, `Customers(id, name)` — find customers who have never placed an order.
+- J5. Three tables: `Enrollments(student_id, course_id)`, `Students(id, name)`, `Courses(id, title)` — list student name + course title for all enrollments.
+
+
+Answers
+
+1.
+select e.name ,d.name
+from employee e
+join department d
+on e.department_id =d.id
+;
+
+
+
+2.
+select d.name ,e.name
+from department d
+left join employee e
+on e.department_id = d.id;
+
+
+3
+
+select d.name
+from department d
+left join employee e
+on e.department_id =d.did
+where e.department_id is null;
+
+
+
+4
+select c.name
+from customer c
+where c.id NOT IN
+(select o.customer_id
+from orders o
+);
+
+
+5.
+select s.name,c.title
+from students s
+join enrollments e on
+e.student_id=s.id
+join courses c
+on c.id = e.course_id
+;
