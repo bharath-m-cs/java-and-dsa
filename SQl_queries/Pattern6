@@ -1,0 +1,70 @@
+**Master Template**
+
+```sql
+SELECT d.name, MAX(e.salary) AS max_salary
+FROM Employee e
+JOIN Department d ON e.departmentId = d.id
+GROUP BY d.name;
+```
+
+**Basic Practice Problems**
+
+- K1. `Employee(id, name, salary, department_id)`, `Department(id, name)` — average salary per department name (not id).
+- K2. Highest salary per department, showing department name and employee name (tuple-match approach).
+- K3. `Orders(order_id, customer_id, amount)`, `Customers(id, name)` — total amount spent per customer name, only customers spending > 1000.
+- K4. `Project(project_id, employee_id)`, `Employee(employee_id, name, experience_years)` — average experience per project.
+- K5. Departments with more than 3 employees, showing department name (JOIN + GROUP BY + HAVING combined).
+
+
+answers
+1.
+select d.name , AVG(salary)
+from employee e
+join department d
+on e.department_id =d.id
+group by d.name;
+
+
+2.
+select d.name , e.name, MAX(e.salary) as high_sal
+from employee e
+join department d
+on e.department_id =d.id
+group by d.name;
+
+
+3.- K3. `Orders(order_id, customer_id, amount)`, `Customers(id, name)` — total amount spent per customer name, only customers spending > 1000.
+
+select c.name , SUM(o.amount) as total_amount
+from customer c
+join orders o
+on o.customer_id=c.id
+
+group by c.name
+having SUM(o.amount) >1000;
+
+
+4.
+- K4. `Project(project_id, employee_id)`, `Employee(employee_id, name, experience_years)` — average experience per project.
+
+
+select p.project_id ,AVG(e.experience_years) as avg_exp
+from employee e
+join project p
+on p.employee_id = e.employee_id
+group by p.project_id;
+
+
+5. Departments with more than 3 employees, showing department name (JOIN + GROUP BY + HAVING combined).
+
+`Employee(id, name, salary, department_id)`, `Department(id, name)
+
+
+select d.name
+from department d
+join employee e
+on e.department_id= d.id
+group by d.name
+having count(distinct e.id) >3;
+
+
