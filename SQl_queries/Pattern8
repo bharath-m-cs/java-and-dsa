@@ -1,0 +1,76 @@
+ S1. `Employee(id, name, salary, department_id)` — employees whose salary is above the overall average (scalar).
+- S2. `Customers(id, name)`, `Orders(order_id, customer_id)` — customers who have placed at least one order (IN).
+- S3. Same tables — customers who have never placed an order (NOT IN vs NOT EXISTS — try both, note the NULL risk).
+- S4. `Students(id, name)`, `Enrollments(student_id, course_id)` — students enrolled in at least one course (EXISTS).
+- S5. Departments that have at least one employee earning over 100000 (EXISTS).
+- S6. Find the second-highest salary using a subquery (classic scalar-subquery problem).
+
+TOPIC : SUB QUERIES
+answers :
+
+s1) select name
+from employee
+where salary>
+(
+select AVG(salary)
+from employee
+)
+;
+
+
+2) select c.name
+from customers c
+
+where c.id in
+(
+select o.customer_id
+from orders o
+);
+
+
+
+3)  select c.name
+from customers c
+where c.id NOT in
+(
+select o.customer_id
+from orders o
+);
+
+
+4)
+
+- S4. `Students(id, name)`, `Enrollments(student_id, course_id)` — students enrolled in at least one course (EXISTS).
+
+select s.name
+from students s
+where s.id  in
+(
+
+select e.student_id
+from enrollments e
+);
+
+5)- S5. Departments that have at least one employee earning over 100000 (EXISTS).
+`Employee(id, name, salary, department_id)`
+
+select d.name
+from department
+where d.id IN
+(
+select e.department_id
+from employee e
+where e.salary>1000
+);
+
+
+select MAX(salary)
+from employee
+where salary <
+(
+
+select MAX(salary)
+from employee)
+);
+
+
